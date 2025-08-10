@@ -1,12 +1,28 @@
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
-const socket = io("http://localhost:3150", {
-    transports: ["websocket"], // optional but faster
+// Use environment variable with fallback
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3150';
+
+console.log('🔌 Initializing socket with URL:', BACKEND_URL);
+
+const socket = io(BACKEND_URL, {
+    autoConnect: false, // We'll connect manually after login
+    transports: ['websocket', 'polling'], // Allow both transports
+    timeout: 20000,
+    forceNew: true
 });
 
-socket.on("connect", () => {
-    console.log("Connected to server:", socket.id);
+// Debug socket events
+socket.on('connect', () => {
+    console.log('✅ Socket connected:', socket.id);
+});
+
+socket.on('disconnect', (reason) => {
+    console.log('❌ Socket disconnected:', reason);
+});
+
+socket.on('connect_error', (error) => {
+    console.error('🚨 Socket connection error:', error);
 });
 
 export default socket;
-
