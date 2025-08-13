@@ -1,24 +1,24 @@
+// models/Message.js - Make sure your model looks like this
 const mongoose = require('mongoose');
 
-const messageSchema = new mongoose.Schema({
+const MessageSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: true
     },
     message: {
         type: String,
-        required: true,
-        trim: true,
+        required: true
     },
     type: {
         type: String,
-        enum: ["user", "system"],  // "user" = normal msg, "system" = joined/left
-        default: "user",
+        enum: ['user', 'system'],
+        default: 'user'
     },
     timestamp: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     }
 });
 
-module.exports = mongoose.model("Message", messageSchema);
+module.exports = mongoose.model('Message', MessageSchema);
